@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const helpers = require('./helpers');
 
 const config = {
   entry: {
@@ -11,6 +10,7 @@ const config = {
       '@angular/platform-browser-dynamic',
       '@angular/core',
       '@angular/common',
+      '@angular/forms',
       '@angular/http',
       '@angular/router',
       'rxjs'
@@ -39,8 +39,8 @@ const config = {
         loaders: [
           {
             loader: 'awesome-typescript-loader',
-            options: { configFileName: helpers.root('src', 'tsconfig.json') }
-          } , 'angular2-template-loader'
+            options: { configFileName: path.resolve('./tsconfig.json') }
+          }
         ]
       }
     ]
@@ -57,17 +57,12 @@ const config = {
     }
   },
   plugins: [
-    new webpack.ContextReplacementPlugin(
-      // The (\\|\/) piece accounts for path separators in *nix and Windows
-      /angular(\\|\/)core(\\|\/)@angular/,
-      helpers.root('./src'), // location of your src
-      {} // a map of your routes
-    ),
+    new webpack.ContextReplacementPlugin(/\@angular(\\|\/)core(\\|\/)esm5/, path.join(__dirname, './src'), {}),
     new HtmlWebpackPlugin({
       template: 'wwwroot/index.html'
     }),
     new ExtractTextPlugin({
-      filename:'[name].css' //put style.css in theme's root directory
+      filename:'[name].css'
     })
   ],
   devtool: 'source-map',

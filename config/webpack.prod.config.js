@@ -60,7 +60,7 @@ const config = {
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)@angular/,
-      helpers.root('./src'), // location of your src
+      helpers.root('src'), // location of your src
       {} // a map of your routes
     ),
     new HtmlWebpackPlugin({
