@@ -31,7 +31,6 @@ const config = {
     rules: [
       {
         test: /\.scss$/,
-        //exclude: helpers.root('src', 'app'),
         use: ExtractTextPlugin.extract({
           fallback:'style-loader',
           use: ["css-loader", "sass-loader"]
@@ -41,10 +40,17 @@ const config = {
         test: /\.ts$/,
         loaders: [
           {
-            loader: 'awesome-typescript-loader',
-            options: { configFileName: helpers.root('./', 'tsconfig.json') }
-          }, 'angular2-template-loader'
-        ]
+            loader: 'ts-loader',
+            options: {
+              configFile: helpers.root('./', 'tsconfig.json')
+            }
+          },
+          {
+            loader: 'angular2-template-loader'
+          }
+        ],
+        exclude: /node_modules/,
+        
       },
       {
         test: /\.html$/,
