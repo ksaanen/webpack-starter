@@ -2,9 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const helpers = require('./helpers');
 
 const config = {
   entry: {
+    polyfills: './src/ts/polyfills.ts',
     vendors: [
       '@angular/platform-browser',
       '@angular/platform-browser-dynamic',
@@ -29,6 +31,7 @@ const config = {
     rules: [
       {
         test: /\.scss$/,
+        //exclude: helpers.root('src', 'app'),
         use: ExtractTextPlugin.extract({
           fallback:'style-loader',
           use: ["css-loader", "sass-loader"]
@@ -39,9 +42,13 @@ const config = {
         loaders: [
           {
             loader: 'awesome-typescript-loader',
-            options: { configFileName: path.resolve('./tsconfig.json') }
-          }
+            options: { configFileName: helpers.root('./', 'tsconfig.json') }
+          }, 'angular2-template-loader'
         ]
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader'
       }
     ]
   },
